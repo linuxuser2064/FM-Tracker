@@ -251,8 +251,6 @@ Public Class FMSynthProvider
         ' Linear interpolate between steps
         Return table(index) + (table(index + 1) - table(index)) * frac
     End Function
-    Private r As New Random
-    Private prevOut As Double = 0
     Public Function Read(buffer As Single(), offset As Integer, count As Integer) As Integer Implements ISampleProvider.Read
 
         For i As Integer = 0 To count - 1
