@@ -1,0 +1,85 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FM_Tracker"
+        xmlns:numeric="clr-namespace:NumericUpDownLib;assembly=NumericUpDownLib"
+        mc:Ignorable="d"
+        Title="FM Tracker" Height="600" Width="916" Background="#FF303030" Foreground="White" Loaded="Window_Loaded" Closing="Window_Closing" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Background="#FF303030" Foreground="White" VerticalAlignment="Top">
+            <MenuItem Header="Open song" Click="MenuItem_Click"/>
+            <MenuItem Header="Save song" Click="MenuItem_Click_1"/>
+        </Menu>
+        <Grid Grid.Row="0" Grid.RowSpan="1" Margin="0,18,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Patterns" BorderBrush="Black">
+                <Grid>
+                    <ListBox x:Name="PatternBox" Margin="0,0,27,0" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
+                    <Button x:Name="AddPatternButton" Content="&#xECC8;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="24" Width="27" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    <Button x:Name="RemovePatternButton" Content="&#xECC9;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="27" Height="24" Margin="0,24,0,0" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" FontSize="16" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="CopyPatternButton" Content="&#xE8C8;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="27" Height="24" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" Margin="0,48,0,0" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Song" BorderBrush="Black" Grid.ColumnSpan="1" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Label Content="Speed:" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,33,0,0"/>
+                    <numeric:NumericUpDown x:Name="SpeedBox" Margin="46,34,55,0" VerticalAlignment="Top" Value="6" Foreground="White" Background="#FF202020" BorderBrush="#FF404040" IsMouseDragEnabled="False" IsReadOnly="False"></numeric:NumericUpDown>
+                    <Label Content="tick/row" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Margin="0,34,0,0"/>
+                    <Button x:Name="PlayStopButton" Content="&#xF08F;" HorizontalAlignment="Left" Margin="7,89,0,0" VerticalAlignment="Top" Height="24" Width="24" FontFamily="Segoe MDL2 Assets" FontSize="14" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
+                    <Button x:Name="LoopPatternButton" Content="&#xE8EE;" HorizontalAlignment="Left" Margin="36,89,0,0" VerticalAlignment="Top" Height="24" Width="24" FontFamily="Segoe MDL2 Assets" FontSize="14" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
+                    <Label Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Margin="0,4,0,0"/>
+                    <TextBox x:Name="SongNameBox" Margin="46,10,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" BorderBrush="#FF404040" Foreground="White" SelectionBrush="#FF00447B" Background="#FF202020"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="2" Header="Edit options" BorderBrush="Black" Grid.ColumnSpan="1" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Label Content="Octave" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,3,0,0"/>
+                    <numeric:NumericUpDown x:Name="OctaveBox" Margin="46,4,10,0" VerticalAlignment="Top" Value="3" BorderBrush="#FF404040" Background="#FF202020" Foreground="White" ValueChanged="OctaveBox_ValueChanged" IsReadOnly="False" IsMouseDragEnabled="False"/>
+                    <Label Content="Step" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,33,0,0"/>
+                    <numeric:NumericUpDown x:Name="EditStepBox" Margin="46,34,10,0" VerticalAlignment="Top" Value="1" BorderBrush="#FF404040" Background="#FF202020" Foreground="White" ValueChanged="EditStepBox_ValueChanged" IsReadOnly="False" IsMouseDragEnabled="False"></numeric:NumericUpDown>
+                    <CheckBox x:Name="EditCheckBox" Content="Edit" HorizontalAlignment="Left" Margin="3,68,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="3" Header="Instruments" BorderBrush="Black" Grid.ColumnSpan="1" Margin="0,0,0,0" Foreground="White">
+                <Grid>
+                    <ListBox x:Name="InstrumentBox" Margin="0,0,27,0" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
+                    <Button x:Name="AddInstrumentButton" Content="&#xECC8;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="24" Width="27" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    <Button x:Name="RemoveInstrumentButton" Content="&#xECC9;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="27" Height="24" Margin="0,24,0,0" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    <Button x:Name="CopyInstrumentButton" Content="&#xE8C8;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="27" Height="24" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" Margin="0,48,0,0" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                </Grid>
+            </GroupBox>
+
+        </Grid>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="Black">
+            <Grid Grid.Row="1" Margin="0,0,0,0" Background="Black" Width="900" HorizontalAlignment="Left">
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh1" Background="Black" ShowRowNumbers="True" HorizontalAlignment="Left" Width="130" Margin="0,18,0,0"/>
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh2" Background="Black" HorizontalAlignment="Left" Width="100" Margin="130,18,0,0" />
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh3" Background="Black" HorizontalAlignment="Left" Width="100" Margin="230,18,0,0" />
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh4" Background="Black" HorizontalAlignment="Left" Width="100" Margin="330,18,0,0" />
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh5" Background="Black" HorizontalAlignment="Left" Width="100" Margin="430,18,0,0" />
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh6" Background="Black" HorizontalAlignment="Left" Width="100" Margin="530,18,0,0" />
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh7" Background="Black" HorizontalAlignment="Left" Width="100" Margin="630,18,0,0" />
+                <local:PatternView ClipToBounds="True" x:Name="PatternCh8" Background="Black" HorizontalAlignment="Left" Width="100" Margin="730,18,0,0" />
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 1" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="30,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 2" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="130,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 3" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="230,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 4" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="330,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 5" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="430,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 6" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="530,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 7" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="630,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Channel 8" VerticalAlignment="Top" TextAlignment="Center" Width="100" Height="18" Margin="730,0,0,0"/>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>
