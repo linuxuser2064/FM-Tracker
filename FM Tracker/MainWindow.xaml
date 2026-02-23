@@ -31,27 +31,30 @@
                     <Button x:Name="CopyPatternButton" Content="&#xE8C8;" HorizontalAlignment="Right" VerticalAlignment="Top" Width="27" Height="24" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" Margin="0,48,0,0" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                 </Grid>
             </GroupBox>
-            <GroupBox Grid.Column="1" Header="Song" BorderBrush="Black" Grid.ColumnSpan="1" Margin="0,0,0,0">
-                <Grid Margin="0,0,0,0">
+            <GroupBox Grid.Column="1" Header="Song" BorderBrush="Black">
+                <Grid>
                     <Label Content="Speed:" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,33,0,0"/>
-                    <numeric:NumericUpDown x:Name="SpeedBox" Margin="46,34,55,0" VerticalAlignment="Top" Value="6" Foreground="White" Background="#FF202020" BorderBrush="#FF404040" IsMouseDragEnabled="False" IsReadOnly="False"></numeric:NumericUpDown>
+                    <numeric:NumericUpDown x:Name="SpeedBox" Margin="49,34,55,0" VerticalAlignment="Top" Value="6" Foreground="White" Background="#FF202020" BorderBrush="#FF404040" IsMouseDragEnabled="False" IsReadOnly="False"></numeric:NumericUpDown>
                     <Label Content="tick/row" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Margin="0,34,0,0"/>
-                    <Button x:Name="PlayStopButton" Content="&#xF08F;" HorizontalAlignment="Left" Margin="7,89,0,0" VerticalAlignment="Top" Height="24" Width="24" FontFamily="Segoe MDL2 Assets" FontSize="14" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
-                    <Button x:Name="LoopPatternButton" Content="&#xE8EE;" HorizontalAlignment="Left" Margin="36,89,0,0" VerticalAlignment="Top" Height="24" Width="24" FontFamily="Segoe MDL2 Assets" FontSize="14" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
                     <Label Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Margin="0,4,0,0"/>
-                    <TextBox x:Name="SongNameBox" Margin="46,10,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" BorderBrush="#FF404040" Foreground="White" SelectionBrush="#FF00447B" Background="#FF202020"/>
+                    <TextBox x:Name="SongNameBox" Margin="49,10,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" BorderBrush="#FF404040" Foreground="White" SelectionBrush="#FF00447B" Background="#FF202020"/>
+                    <Label Content="Tuning:" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,67,0,0"/>
+                    <numeric:NumericUpDown x:Name="TuningBox" Margin="49,68,24,0" VerticalAlignment="Top" Value="440" Foreground="White" Background="#FF202020" BorderBrush="#FF404040" IsMouseDragEnabled="False" IsReadOnly="False" ValueChanged="TuningBox_ValueChanged"/>
+                    <Label Content="Hz" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" Margin="0,68,0,0"/>
                 </Grid>
             </GroupBox>
-            <GroupBox Grid.Column="2" Header="Edit options" BorderBrush="Black" Grid.ColumnSpan="1" Margin="0,0,0,0">
+            <GroupBox Grid.Column="2" Header="Edit options" BorderBrush="Black" >
                 <Grid Margin="0,0,0,0">
                     <Label Content="Octave" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,3,0,0"/>
                     <numeric:NumericUpDown x:Name="OctaveBox" Margin="46,4,10,0" VerticalAlignment="Top" Value="3" BorderBrush="#FF404040" Background="#FF202020" Foreground="White" ValueChanged="OctaveBox_ValueChanged" IsReadOnly="False" IsMouseDragEnabled="False"/>
                     <Label Content="Step" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="0,33,0,0"/>
                     <numeric:NumericUpDown x:Name="EditStepBox" Margin="46,34,10,0" VerticalAlignment="Top" Value="1" BorderBrush="#FF404040" Background="#FF202020" Foreground="White" ValueChanged="EditStepBox_ValueChanged" IsReadOnly="False" IsMouseDragEnabled="False"></numeric:NumericUpDown>
-                    <CheckBox x:Name="EditCheckBox" Content="Edit" HorizontalAlignment="Left" Margin="3,68,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True"/>
+                    <CheckBox x:Name="EditCheckBox" Content="Edit" HorizontalAlignment="Left" Margin="7,66,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="True"/>
+                    <Button x:Name="PlayStopButton" Content="&#xF08F;" HorizontalAlignment="Left" Margin="7,89,0,0" VerticalAlignment="Top" Height="24" Width="24" FontFamily="Segoe MDL2 Assets" FontSize="14" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
+                    <Button x:Name="LoopPatternButton" Content="&#xE8EE;" HorizontalAlignment="Left" Margin="36,89,0,0" VerticalAlignment="Top" Height="24" Width="24" FontFamily="Segoe MDL2 Assets" FontSize="14" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
                 </Grid>
             </GroupBox>
-            <GroupBox Grid.Column="3" Header="Instruments" BorderBrush="Black" Grid.ColumnSpan="1" Margin="0,0,0,0" Foreground="White">
+            <GroupBox Grid.Column="3" Header="Instruments" BorderBrush="Black" Foreground="White">
                 <Grid>
                     <ListBox x:Name="InstrumentBox" Margin="0,0,27,0" Background="#FF202020" Foreground="White" BorderBrush="#FF404040"/>
                     <Button x:Name="AddInstrumentButton" Content="&#xECC8;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="24" Width="27" Background="#FF202020" Foreground="White" BorderBrush="#FF404040" FontFamily="Segoe MDL2 Assets" FontSize="16"/>

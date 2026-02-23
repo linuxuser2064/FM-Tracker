@@ -1,8 +1,11 @@
 ﻿Imports System.Runtime.InteropServices
 
 Public Module defines
-    Public NoteMap As New Dictionary(Of String, Int32) From {
-        {"C-", 261.63}, {"C#", 277.18}, {"D-", 293.66}, {"D#", 311.13}, {"E-", 329.63}, {"F-", 349.23}, {"F#", 369.99}, {"G-", 392}, {"G#", 415.3}, {"A-", 440}, {"A#", 466.16}, {"B-", 494.88}}
+    Public NoteMap As New Dictionary(Of String, Double) From {
+        {"C-", 261.62556530059862}, {"C#", 277.18263097687208}, {"D-", 293.66476791740757}, {"D#", 311.12698372208092}, {"E-", 329.62755691286992}, {"F-", 349.22823143300388}, {"F#", 369.9944227116344}, {"G-", 391.99543598174927}, {"G#", 415.30469757994513}, {"A-", 440}, {"A#", 466.16376151808993}, {"B-", 494.88330125612413}}
+    Public Sub CalculateNewNoteMap(Optional tuning As Double = 440)
+
+    End Sub
 End Module
 Public Class Instrument
     Public Property Name As String
@@ -147,12 +150,13 @@ Public Class Song
     Public Property Patterns6 As List(Of Note())
     Public Property Patterns7 As List(Of Note())
     Public Property Patterns8 As List(Of Note())
+    Public Property Tuning As Double = 440.0
     Public Sub New()
     End Sub
     Public Sub New(songName As String, songSpeed As Integer, instruments As Instrument(),
                    Patterns1 As List(Of Note()), Patterns2 As List(Of Note()), Patterns3 As List(Of Note()),
                    Patterns4 As List(Of Note()), Patterns5 As List(Of Note()), Patterns6 As List(Of Note()),
-                   Patterns7 As List(Of Note()), Patterns8 As List(Of Note()))
+                   Patterns7 As List(Of Note()), Patterns8 As List(Of Note()), tuning As Double)
         Name = songName
         Speed = songSpeed
         Me.Instruments = instruments
@@ -164,6 +168,7 @@ Public Class Song
         Me.Patterns6 = Patterns6
         Me.Patterns7 = Patterns7
         Me.Patterns8 = Patterns8
+        Me.Tuning = tuning
     End Sub
 End Class
 Public Class ChannelStatus

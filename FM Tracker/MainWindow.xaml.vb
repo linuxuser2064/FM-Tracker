@@ -533,6 +533,8 @@ Class MainWindow
                     deserialized = JsonSerializer.Deserialize(Of Song)(gz)
                 End Using
             End Using
+            defines.CalculateNewNoteMap(deserialized.Tuning)
+            TuningBox.Value = deserialized.Tuning
             Me.Instruments.Clear()
             Me.Patterns1.Clear()
             Me.Patterns2.Clear()
@@ -595,7 +597,8 @@ Class MainWindow
                 SongNameBox.Text,
                 SpeedBox.Value,
                 Instruments.ToArray,
-                Patterns1, Patterns2, Patterns3, Patterns4, Patterns5, Patterns6, Patterns7, Patterns8)
+                Patterns1, Patterns2, Patterns3, Patterns4, Patterns5, Patterns6, Patterns7, Patterns8,
+TuningBox.Value)
             'Dim serialized = JsonSerializer.Serialize(Of Song)(newsong)
             Using fs = File.Create(dlg.FileName)
                 Using gz = New IO.Compression.GZipStream(fs, IO.Compression.CompressionLevel.Optimal)
@@ -617,5 +620,9 @@ Class MainWindow
         PatternCh6.EditStep = EditStepBox.Value
         PatternCh7.EditStep = EditStepBox.Value
         PatternCh8.EditStep = EditStepBox.Value
+    End Sub
+
+    Private Sub TuningBox_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Integer))
+        defines.CalculateNewNoteMap(e.NewValue)
     End Sub
 End Class
