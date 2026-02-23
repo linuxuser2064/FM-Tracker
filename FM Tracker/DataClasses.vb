@@ -3,7 +3,20 @@
 Public Module defines
     Public NoteMap As New Dictionary(Of String, Double) From {
         {"C-", 261.62556530059862}, {"C#", 277.18263097687208}, {"D-", 293.66476791740757}, {"D#", 311.12698372208092}, {"E-", 329.62755691286992}, {"F-", 349.22823143300388}, {"F#", 369.9944227116344}, {"G-", 391.99543598174927}, {"G#", 415.30469757994513}, {"A-", 440}, {"A#", 466.16376151808993}, {"B-", 494.88330125612413}}
-    Public Sub CalculateNewNoteMap(Optional tuning As Double = 440)
+    Public Sub CalculateNewNoteMap(Optional tuning As Double = 440.0)
+
+        Dim semitoneOffsets As New Dictionary(Of String, Integer) From {
+            {"C-", -9}, {"C#", -8}, {"D-", -7}, {"D#", -6},
+            {"E-", -5}, {"F-", -4}, {"F#", -3}, {"G-", -2},
+            {"G#", -1}, {"A-", 0}, {"A#", 1}, {"B-", 2}
+        }
+
+        NoteMap.Clear()
+
+        For Each kvp In semitoneOffsets
+            Dim frequency As Double = tuning * Math.Pow(2, kvp.Value / 12.0)
+            NoteMap(kvp.Key) = frequency
+        Next
 
     End Sub
 End Module
