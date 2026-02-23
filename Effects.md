@@ -8,6 +8,9 @@
 - 4xy: Vibrato
   - x: Vibrato speed
   - y: Vibrato depth
+- 5xy: Detune
+  - x: Detune for modulator (0-F, 8 is center/none)
+  - y: Detune for carrier (0-F, 8 is center/none)
 - Bxx: Jump to pattern.
   - x: Pattern to jump to
 - Cxx: Set volume
