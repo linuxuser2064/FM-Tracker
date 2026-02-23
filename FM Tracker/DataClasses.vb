@@ -91,7 +91,26 @@ Public Structure ADSR
 End Structure
 Public Structure Note
     Public Property NoteStr As String
-    Public Property Frequency As Int32
+    Public Property Frequency() As Double
+        Get
+            Dim NoteLetter = NoteStr.Remove(2)
+            Dim Octave = Val(NoteStr.ToCharArray()(2))
+            Dim freq = NoteMap(NoteLetter)
+            If Octave = 0 Then freq \= 16
+            If Octave = 1 Then freq \= 8
+            If Octave = 2 Then freq \= 4
+            If Octave = 3 Then freq \= 2
+            ' nothing to do for octave 4 (root octave)
+            If Octave = 5 Then freq *= 2
+            If Octave = 6 Then freq *= 4
+            If Octave = 7 Then freq *= 8
+            If Octave = 8 Then freq *= 16
+            Return freq
+        End Get
+        Set(value As Double)
+
+        End Set
+    End Property
     Public Property InstrumentNum As Int32
     Public Property EffectLetter As Char
     Public Property EffectData As Byte
@@ -137,16 +156,16 @@ Public Structure Note
             Frequency = 0
             InstrumentNum = -2
         Else
-            Dim NoteLetter = noteStr.Remove(2)
-            Dim Octave = Val(noteStr.ToCharArray()(2))
-            Frequency = NoteMap(NoteLetter)
-            If Octave = 1 Then Frequency \= 8
-            If Octave = 2 Then Frequency \= 4
-            If Octave = 3 Then Frequency \= 2
-            ' nothing to do for octave 4 (root octave)
-            If Octave = 5 Then Frequency *= 2
-            If Octave = 6 Then Frequency *= 4
-            If Octave = 7 Then Frequency *= 8
+            'Dim NoteLetter = noteStr.Remove(2)
+            'Dim Octave = Val(noteStr.ToCharArray()(2))
+            'Frequency = NoteMap(NoteLetter)
+            'If Octave = 1 Then Frequency \= 8
+            'If Octave = 2 Then Frequency \= 4
+            'If Octave = 3 Then Frequency \= 2
+            '' nothing to do for octave 4 (root octave)
+            'If Octave = 5 Then Frequency *= 2
+            'If Octave = 6 Then Frequency *= 4
+            'If Octave = 7 Then Frequency *= 8
             InstrumentNum = instrumentNumber
         End If
     End Sub

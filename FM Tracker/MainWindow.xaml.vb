@@ -623,6 +623,6 @@ TuningBox.Value)
     End Sub
 
     Private Sub TuningBox_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Integer))
-        defines.CalculateNewNoteMap(e.NewValue)
+        defines.CalculateNewNoteMap(TuningBox.Value)
     End Sub
 End Class
