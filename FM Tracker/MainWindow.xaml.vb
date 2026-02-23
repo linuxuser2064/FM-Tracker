@@ -91,7 +91,7 @@ Class MainWindow
             Case "2" ' pitch slide down
                 status.PitchSlideActive = note.EffectData <> 0
                 status.PitchSlideSpeed = -note.EffectData
-            Case "4"
+            Case "4" ' vibrato
                 Dim vibdepth = note.EffectData And &HF
                 Dim vibspeed = (note.EffectData And &HF0) >> 4
                 status.VibratoPhase = 0
@@ -104,6 +104,11 @@ Class MainWindow
                     status.VibratoDepth = vibdepth
                     status.VibratoSpeed = vibspeed
                 End If
+            Case "5"
+                Dim moddetune = note.EffectData And &HF
+                Dim carrierdetune = (note.EffectData And &HF0) >> 4
+                status.CarrierDetune = carrierdetune - 8
+                status.ModulatorDetune = moddetune - 8
             Case "L" ' legato
                 status.LegatoActive = note.EffectData > 0
             Case "R"
@@ -127,8 +132,8 @@ Class MainWindow
             status.VibratoPhase += status.VibratoSpeed / 10
             status.VibratoPhase = status.VibratoPhase Mod (Math.PI * 2)
             Dim val = Math.Sin(status.VibratoPhase)
-            ch.CarrierFrequency = status.OriginalFrequency + val * (status.VibratoDepth * 2)
-            ch.ModulatorFrequency = status.OriginalFrequency + val * (status.VibratoDepth * 2)
+            ch.CarrierFrequency = (status.OriginalFrequency * (1 + status.CarrierDetune / 1000)) + val * (status.VibratoDepth * 2)
+            ch.ModulatorFrequency = (status.OriginalFrequency * (1 + status.ModulatorDetune / 1000)) + val * (status.VibratoDepth * 2)
         End If
     End Sub
     Public Sub NewNote(ch As FMSynthProvider, status As ChannelStatus, ptns As List(Of Note()))
@@ -149,8 +154,8 @@ Class MainWindow
         If note.InstrumentNum >= 0 Then
             ' new note
             SetChannelInstrument(ch, Instruments(note.InstrumentNum))
-            ch.CarrierFrequency = note.Frequency
-            ch.ModulatorFrequency = note.Frequency
+            ch.CarrierFrequency = note.Frequency * (1 + status.CarrierDetune / 1000)
+            ch.ModulatorFrequency = note.Frequency * (1 + status.ModulatorDetune / 1000)
             status.OriginalFrequency = note.Frequency
             If Not status.LegatoActive Then
                 If status.DontStartEnvelope Then ch.StartNoteModulator() Else ch.StartNote()

@@ -223,6 +223,8 @@ Public Class ChannelStatus
     Public ArpeggioPhase As Byte = 0 ' 0 1 2 0 1 2 etc
 
     Public DontStartEnvelope As Boolean = False
+    Public CarrierDetune As SByte = 0
+    Public ModulatorDetune As SByte = 0
     Public Sub Reset()
         OriginalFrequency = 0
         LegatoActive = False
@@ -241,6 +243,8 @@ Public Class ChannelStatus
         ArpeggioPhase = 0
 
         DontStartEnvelope = False
+        CarrierDetune = 0
+        ModulatorDetune = 0
     End Sub
 End Class
 Public Class AccurateTimer
