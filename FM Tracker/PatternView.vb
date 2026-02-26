@@ -48,8 +48,8 @@
     ' ==============================
     ' Block selection
     ' ==============================
-    Private selectionStartRow As Integer = -1
-    Private selectionEndRow As Integer = -1
+    Public selectionStartRow As Integer = -1
+    Public selectionEndRow As Integer = -1
 
     Private Function HasSelection() As Boolean
         Return selectionStartRow >= 0 AndAlso selectionEndRow >= 0 _
@@ -63,7 +63,7 @@
     Private Function SelectionMax() As Integer
         Return Math.Max(selectionStartRow, selectionEndRow)
     End Function
-    Private ClipboardBuffer As List(Of Note) = Nothing
+    Public ClipboardBuffer As List(Of Note) = Nothing
 
     '==============================
     ' Layout constants
@@ -215,6 +215,13 @@
 
         Return Nothing
     End Function
+    Private Sub SyncCopyPasteBuffers()
+        For Each x As PatternView In ViewsToSync
+            Dim newlist As New List(Of Note)
+            newlist.AddRange(Me.ClipboardBuffer)
+            x.ClipboardBuffer = newlist
+        Next
+    End Sub
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
         MyBase.OnKeyDown(e)
         e.Handled = True
@@ -378,6 +385,7 @@
             Else
                 ClipboardBuffer = New List(Of Note)
                 ClipboardBuffer.Add(Pattern(SelectedRow).Clone())
+                SyncCopyPasteBuffers()
             End If
         End If
 
@@ -391,9 +399,11 @@
                     ClipboardBuffer.Add(Pattern(i).Clone())
                     Pattern(i) = New Note("...", -1)
                 Next
+                SyncCopyPasteBuffers()
             Else
                 ClipboardBuffer = New List(Of Note)
                 ClipboardBuffer.Add(Pattern(SelectedRow).Clone())
+                SyncCopyPasteBuffers()
                 Pattern(SelectedRow) = New Note("...", -1)
             End If
         End If

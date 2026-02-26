@@ -7,6 +7,8 @@ Public Class FMSynthProvider
     Private phaseModulator As Double = 0
     Private frequencyCarrier As Double = 440.0
     Private frequencyModulator As Double = 440.0
+    Private detuneCarrier As Double = 0.0
+    Private detuneModulator As Double = 0.0
     Private modulationIndex As Double = 0.0
     Private maxModulationIndex As Double = 0.0
     Private multiplierCarrier As Double = 1.0
@@ -70,6 +72,23 @@ Public Class FMSynthProvider
         End Get
         Set(value As Double)
             frequencyModulator = value
+        End Set
+    End Property
+    Public Property CarrierDetune As Double
+        Get
+            Return detuneCarrier
+        End Get
+        Set(value As Double)
+            detuneCarrier = value
+        End Set
+    End Property
+
+    Public Property ModulatorDetune As Double
+        Get
+            Return detuneModulator
+        End Get
+        Set(value As Double)
+            detuneModulator = value
         End Set
     End Property
 
@@ -262,12 +281,11 @@ Public Class FMSynthProvider
             modulationIndex = GetEnvelopeValueMod() * maxModulationIndex
 
             ' Adjust pitch
-            frequencyCarrier += pitchChangePerReadVal
+            frequencyCarrier *= pitchChangePerReadVal / 200 + 1
             frequencyCarrier = Math.Min(sampleRate / 2, Math.Max(0, frequencyCarrier))
-            frequencyModulator += pitchChangePerReadVal
+            frequencyModulator *= pitchChangePerReadVal / 200 + 1
             frequencyModulator = Math.Min(sampleRate / 2, Math.Max(0, frequencyModulator))
             ' === OPL-style feedback ===
-            ' Average last two outputs (closer to YM3812 behavior)
             Dim feedbackInput As Double = previousModulation
 
             ' Apply feedback to phase (range 0–2π)
@@ -280,7 +298,7 @@ Public Class FMSynthProvider
             previousModulation = modulatorSample
 
             ' Advance modulator phase
-            phaseModulator += (frequencyModulator * multiplierModulator) / sampleRate
+            phaseModulator += (frequencyModulator * (1 + detuneModulator)) * multiplierModulator / sampleRate
             If phaseModulator >= 1.0 Then phaseModulator -= 1.0
 
             ' Carrier modulated by modulator
@@ -288,7 +306,7 @@ Public Class FMSynthProvider
             Dim carrierSample As Double = Math.Sin(carrierPhase)
 
             ' Advance carrier phase
-            phaseCarrier += (frequencyCarrier * multiplierCarrier) / sampleRate
+            phaseCarrier += (frequencyCarrier * (1 + detuneCarrier)) * multiplierCarrier / sampleRate
             If phaseCarrier >= 1.0 Then phaseCarrier -= 1.0
 
             buffer(offset + i) = CSng(carrierSample * volumeValue)

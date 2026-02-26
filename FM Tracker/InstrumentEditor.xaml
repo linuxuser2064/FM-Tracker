@@ -38,6 +38,9 @@
             <Label Content="Multiplier" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="10,259,0,0"/>
             <Slider x:Name="MMultiplierSlider" HorizontalAlignment="Left" Margin="76,259,0,0" VerticalAlignment="Top" Width="120" Maximum="16" SmallChange="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Height="37" ValueChanged="MMultiplierSlider_ValueChanged"/>
             <Label x:Name="MMultiplierLabel" Content="{Binding Value, ElementName=MMultiplierSlider}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="201,259,0,0"/>
+            <Label Content="Detune" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="10,285,0,0"/>
+            <Slider x:Name="MDetuneSlider" HorizontalAlignment="Left" Margin="76,285,0,0" VerticalAlignment="Top" Width="120" Maximum="8" SmallChange="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Height="37" Minimum="-8" ValueChanged="MDetuneSlider_ValueChanged"/>
+            <Label x:Name="MDetuneLabel" Content="{Binding Value, ElementName=MDetuneSlider}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="201,285,0,0"/>
             <TextBlock HorizontalAlignment="Left" Margin="274,20,0,0" TextWrapping="Wrap" Text="TL" VerticalAlignment="Top"/>
             <Slider x:Name="MTLSlider" HorizontalAlignment="Left" Margin="265,40,0,0" VerticalAlignment="Top" Width="30" Orientation="Vertical" Height="232" LargeChange="0.5" SmallChange="0.05" Maximum="16" TickPlacement="Both" ValueChanged="MTLSlider_ValueChanged"/>
             <TextBlock x:Name="MTLLabel" HorizontalAlignment="Left" Margin="259,277,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="42" TextAlignment="Center"/>

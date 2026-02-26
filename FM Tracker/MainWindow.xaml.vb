@@ -132,8 +132,8 @@ Class MainWindow
             status.VibratoPhase += status.VibratoSpeed / 10
             status.VibratoPhase = status.VibratoPhase Mod (Math.PI * 2)
             Dim val = Math.Sin(status.VibratoPhase)
-            ch.CarrierFrequency = (status.OriginalFrequency * (1 + status.CarrierDetune / 1000)) + val * (status.VibratoDepth * 2)
-            ch.ModulatorFrequency = (status.OriginalFrequency * (1 + status.ModulatorDetune / 1000)) + val * (status.VibratoDepth * 2)
+            ch.CarrierFrequency = (status.OriginalFrequency) + val * (status.VibratoDepth * 2)
+            ch.ModulatorFrequency = (status.OriginalFrequency) + val * (status.VibratoDepth * 2)
         End If
     End Sub
     Public Sub NewNote(ch As FMSynthProvider, status As ChannelStatus, ptns As List(Of Note()))
@@ -154,12 +154,13 @@ Class MainWindow
         If note.InstrumentNum >= 0 Then
             ' new note
             SetChannelInstrument(ch, Instruments(note.InstrumentNum))
-            ch.CarrierFrequency = note.Frequency * (1 + status.CarrierDetune / 1000)
-            ch.ModulatorFrequency = note.Frequency * (1 + status.ModulatorDetune / 1000)
+            ch.CarrierFrequency = note.Frequency
+            ch.ModulatorFrequency = note.Frequency
+            ch.CarrierDetune = status.CarrierDetune / 1000
+            ch.ModulatorDetune = status.ModulatorDetune / 1000
             status.OriginalFrequency = note.Frequency
             If Not status.LegatoActive Then
                 If status.DontStartEnvelope Then ch.StartNoteModulator() Else ch.StartNote()
-                'ch.StartNote()
             End If
         End If
         If note.EffectLetter = "C" Then
@@ -589,28 +590,50 @@ Class MainWindow
 
         Dim result As Boolean? = dlg.ShowDialog()
         If result = True Then
-            ' save patterns
-            Patterns1(PatternBox.SelectedIndex) = PatternCh1.Pattern.Clone
-            Patterns2(PatternBox.SelectedIndex) = PatternCh2.Pattern.Clone
-            Patterns3(PatternBox.SelectedIndex) = PatternCh3.Pattern.Clone
-            Patterns4(PatternBox.SelectedIndex) = PatternCh4.Pattern.Clone
-            Patterns5(PatternBox.SelectedIndex) = PatternCh5.Pattern.Clone
-            Patterns6(PatternBox.SelectedIndex) = PatternCh6.Pattern.Clone
-            Patterns7(PatternBox.SelectedIndex) = PatternCh7.Pattern.Clone
-            Patterns8(PatternBox.SelectedIndex) = PatternCh8.Pattern.Clone
-            Dim newsong As New Song(
+            Dim backup As Byte() = Nothing
+            If File.Exists(dlg.FileName) Then
+                Try
+                    backup = File.ReadAllBytes(dlg.FileName)
+                Catch ex As Exception
+                    MsgBox($"Error while attempting to read from file. Aborting save.
+Technical exception info:
+{ex.ToString}", MsgBoxStyle.Critical, "FM Tracker")
+                End Try
+            End If
+            Try
+                ' save patterns
+                Patterns1(PatternBox.SelectedIndex) = PatternCh1.Pattern.Clone
+                Patterns2(PatternBox.SelectedIndex) = PatternCh2.Pattern.Clone
+                Patterns3(PatternBox.SelectedIndex) = PatternCh3.Pattern.Clone
+                Patterns4(PatternBox.SelectedIndex) = PatternCh4.Pattern.Clone
+                Patterns5(PatternBox.SelectedIndex) = PatternCh5.Pattern.Clone
+                Patterns6(PatternBox.SelectedIndex) = PatternCh6.Pattern.Clone
+                Patterns7(PatternBox.SelectedIndex) = PatternCh7.Pattern.Clone
+                Patterns8(PatternBox.SelectedIndex) = PatternCh8.Pattern.Clone
+                Dim newsong As New Song(
                 SongNameBox.Text,
                 SpeedBox.Value,
                 Instruments.ToArray,
                 Patterns1, Patterns2, Patterns3, Patterns4, Patterns5, Patterns6, Patterns7, Patterns8,
 TuningBox.Value)
-            'Dim serialized = JsonSerializer.Serialize(Of Song)(newsong)
-            Using fs = File.Create(dlg.FileName)
-                Using gz = New IO.Compression.GZipStream(fs, IO.Compression.CompressionLevel.Optimal)
-                    System.Text.Json.JsonSerializer.Serialize(gz, newsong)
+                'Dim serialized = JsonSerializer.Serialize(Of Song)(newsong)
+                Using fs = File.Create(dlg.FileName)
+                    Using gz = New IO.Compression.GZipStream(fs, IO.Compression.CompressionLevel.Optimal)
+                        System.Text.Json.JsonSerializer.Serialize(gz, newsong)
+                    End Using
                 End Using
-            End Using
-            'File.WriteAllText(dlg.FileName, serialized)
+                'File.WriteAllText(dlg.FileName, serialized)
+            Catch ex As Exception
+                MsgBox($"Error while saving. {If(backup Is Nothing, "", "Attempting to restore backup...")}
+Technical exception info:
+{ex.ToString}", MsgBoxStyle.Critical, "FM Tracker")
+                Try
+                    'holy nested try
+                    File.WriteAllBytes(dlg.FileName, backup)
+                Catch ex2 As Exception
+                    MsgBox("if you see this youre cooked")
+                End Try
+            End Try
         End If
 
     End Sub

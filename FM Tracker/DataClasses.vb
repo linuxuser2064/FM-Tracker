@@ -30,36 +30,26 @@ Public Class Instrument
     Public Property CRelease As Single
     Public Property CMultiplier As Int32
     Public Property CTL As Single
+    Public Property CDetune As Double ' this is -1 to 1
     Public Property MAttack As Single
     Public Property MDecay As Single
     Public Property MSustain As Single
     Public Property MRelease As Single
     Public Property MMultiplier As Int32
     Public Property MTL As Single
+    Public Property MDetune As Double ' this is -1 to 1
     Public Sub New()
 
     End Sub
     Public Function Clone() As Instrument
-        Return New Instrument(Name, MTL, CMultiplier, MMultiplier, Feedback, New ADSR(CAttack, CDecay, CSustain, CRelease), New ADSR(MAttack, MDecay, MSustain, MRelease), CTL, PitchMacro)
+        Return New Instrument(Name, MTL, CMultiplier, MMultiplier, Feedback,
+                              New ADSR(CAttack, CDecay, CSustain, CRelease),
+                              New ADSR(MAttack, MDecay, MSustain, MRelease), CTL, PitchMacro)
     End Function
-    Public Sub New(iName As String, iTL As Single, iCarrierMult As Single, iModMult As Int32, iFeedback As Double, Optional Volume As Double = 1)
-        MTL = iTL
-        MMultiplier = iModMult
-        CMultiplier = iCarrierMult
-        Feedback = iFeedback
-        CTL = Volume
-        Name = iName
-        CAttack = 0  ' some default values
-        CDecay = 0
-        CSustain = 1
-        CRelease = 0
-        MAttack = 0
-        MDecay = 0
-        MSustain = 1
-        MRelease = 0
-        PitchMacro = 0
-    End Sub
-    Public Sub New(iName As String, iTL As Single, iCarrierMult As Single, iModMult As Int32, iFeedback As Double, carrierADSR As ADSR, modulatorADSR As ADSR, Optional Volume As Double = 1, Optional PitchMacro As Double = 0)
+    Public Sub New(iName As String, iTL As Single, iCarrierMult As Single, iModMult As Int32, iFeedback As Double,
+                   carrierADSR As ADSR, modulatorADSR As ADSR,
+                   Optional Volume As Double = 1, Optional PitchMacro As Double = 0,
+                   Optional CarrierDetune As Double = 0, Optional ModulatorDetune As Double = 0)
         MTL = iTL
         MMultiplier = iModMult
         CMultiplier = iCarrierMult
@@ -75,6 +65,8 @@ Public Class Instrument
         MSustain = modulatorADSR.S
         MRelease = modulatorADSR.R
         Me.PitchMacro = PitchMacro
+        CDetune = CarrierDetune
+        MDetune = ModulatorDetune
     End Sub
 End Class
 Public Structure ADSR
@@ -94,6 +86,7 @@ Public Structure Note
     Public Property Frequency() As Double
         Get
             Dim NoteLetter = NoteStr.Remove(2)
+            If Not NoteMap.ContainsKey(NoteLetter) Then Return 0
             Dim Octave = Val(NoteStr.ToCharArray()(2))
             Dim freq = NoteMap(NoteLetter)
             If Octave = 0 Then freq \= 16
@@ -114,7 +107,6 @@ Public Structure Note
     Public Property InstrumentNum As Int32
     Public Property EffectLetter As Char
     Public Property EffectData As Byte
-    ' note to self dont make blank sub new cuz this is a struct
     Public Shared Function GetNoteFrequency(noteStr As String, Optional offset As Integer = 0) As Double
         If noteStr = "" Or noteStr = "..." Then Return 0
         If noteStr = "OFF" Then Return 0
@@ -124,14 +116,11 @@ Public Structure Note
 
         If Not NoteMap.ContainsKey(noteLetter) Then Return 0
 
-        ' Get base frequency for octave 4
         Dim freq As Double = NoteMap(noteLetter)
 
-        ' Adjust for octave
         Dim octaveDiff As Integer = octave - 4
         freq *= Math.Pow(2, octaveDiff)
 
-        ' Apply optional semitone offset
         If offset <> 0 Then
             freq *= Math.Pow(2, offset / 12.0)
         End If
@@ -156,16 +145,6 @@ Public Structure Note
             Frequency = 0
             InstrumentNum = -2
         Else
-            'Dim NoteLetter = noteStr.Remove(2)
-            'Dim Octave = Val(noteStr.ToCharArray()(2))
-            'Frequency = NoteMap(NoteLetter)
-            'If Octave = 1 Then Frequency \= 8
-            'If Octave = 2 Then Frequency \= 4
-            'If Octave = 3 Then Frequency \= 2
-            '' nothing to do for octave 4 (root octave)
-            'If Octave = 5 Then Frequency *= 2
-            'If Octave = 6 Then Frequency *= 4
-            'If Octave = 7 Then Frequency *= 8
             InstrumentNum = instrumentNumber
         End If
     End Sub

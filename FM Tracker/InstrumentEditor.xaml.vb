@@ -138,4 +138,8 @@
     Private Sub PitchMacroSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
         InstrumentsList(SelectedInstrument).PitchMacro = e.NewValue
     End Sub
+
+    Private Sub MDetuneSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
+        'InstrumentsList(SelectedInstrument).
+    End Sub
 End Class
