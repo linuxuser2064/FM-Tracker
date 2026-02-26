@@ -3,7 +3,10 @@ name: .NET Framework
 on:
   push:
     branches: [ "master" ]
-
+    
+permissions:
+  contents: write
+  
 jobs:
   build:
     runs-on: windows-2022    # works fine lol
