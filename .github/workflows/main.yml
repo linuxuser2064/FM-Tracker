@@ -6,8 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022    # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: windows-2022    # works fine lol
 
     steps:
     - name: Checkout
@@ -41,3 +40,25 @@ jobs:
       with:
         name: win-release-${{ github.sha }}
         path: FM Tracker\bin\Release
+
+    - name: Zip Debug
+      run: Compress-Archive -Path "FM Tracker/bin/Debug/*" -DestinationPath win-debug.zip
+
+    - name: Zip Release
+      run: Compress-Archive -Path "FM Tracker/bin/Release/*" -DestinationPath win-release.zip
+
+    - name: Create or Update Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: dev
+        name: Nightly build
+        prerelease: false
+        overwrite_files: true
+        body: |
+          Automatic build from commit ${{ github.sha }}
+          This will not be marked as prerelease as I will not be making an actual release anytime soon.
+        files: |
+          win-debug.zip
+          win-release.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
