@@ -33,11 +33,11 @@ jobs:
     - name: Upload debug
       uses: actions/upload-artifact@v4
       with:
-        name: win-debug-_${{ github.sha }}
+        name: win-debug-${{ github.sha }}
         path: FM Tracker\bin\Debug
         
     - name: Upload release
       uses: actions/upload-artifact@v4
       with:
-        name: win-release-_${{ github.sha }}
+        name: win-release-${{ github.sha }}
         path: FM Tracker\bin\Release
