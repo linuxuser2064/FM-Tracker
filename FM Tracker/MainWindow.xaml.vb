@@ -95,6 +95,10 @@ Class MainWindow
             Case "2" ' pitch slide down
                 status.PitchSlideActive = note.EffectData <> 0
                 status.PitchSlideSpeed = -note.EffectData
+            Case "3" ' portamento
+                status.PortamentoActive = note.EffectData <> 0
+                status.PortamentoBaseFrequency = note.Frequency
+                status.PortamentoSpeed = note.EffectData
             Case "4" ' vibrato
                 Dim vibdepth = note.EffectData And &HF
                 Dim vibspeed = (note.EffectData And &HF0) >> 4
@@ -132,6 +136,29 @@ Class MainWindow
             ch.CarrierFrequency += status.PitchSlideSpeed
             ch.ModulatorFrequency += status.PitchSlideSpeed
         End If
+        If status.PortamentoActive Then
+            Dim delta As Double = status.PortamentoBaseFrequency - ch.CarrierFrequency
+
+            If Math.Abs(delta) <= status.PortamentoSpeed Then
+                ' close enough, snap to target
+                ch.CarrierFrequency = status.PortamentoBaseFrequency
+                ch.ModulatorFrequency = status.PortamentoBaseFrequency
+
+                status.PortamentoActive = False
+                status.PortamentoSpeed = 0
+                status.PortamentoBaseFrequency = 0
+
+            Else
+                If delta > 0 Then
+                    ch.CarrierFrequency += status.PortamentoSpeed
+                    ch.ModulatorFrequency += status.PortamentoSpeed
+                Else
+                    ch.CarrierFrequency -= status.PortamentoSpeed
+                    ch.ModulatorFrequency -= status.PortamentoSpeed
+                End If
+            End If
+
+        End If
         If status.VibratoActive Then
             status.VibratoPhase += status.VibratoSpeed / 10
             status.VibratoPhase = status.VibratoPhase Mod (Math.PI * 2)
@@ -155,7 +182,7 @@ Class MainWindow
             GoToNewPattern(CurrentPattern, True)
         End If
         EffectSetup(note, status)
-        If note.InstrumentNum >= 0 Then
+        If note.InstrumentNum >= 0 AndAlso status.PortamentoActive = False Then
             ' new note
             SetChannelInstrument(ch, Instruments(note.InstrumentNum))
             ch.CarrierFrequency = note.Frequency

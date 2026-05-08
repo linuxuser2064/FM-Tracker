@@ -3,8 +3,10 @@
   - x: First note of the arpeggio (offset from base note)
   - y: Second note of the arpeggio (offset from base note)
 - 1xx: Pitch slide up.
-  - x: The pitch slide's speed.
+  - x: The pitch slide's speed
 - 2xx: Pitch slide down. (see 1xx for parameter desc.)
+- 3xx: Portamento.
+  - x: The portamento speed 
 - 4xy: Vibrato
   - x: Vibrato speed
   - y: Vibrato depth

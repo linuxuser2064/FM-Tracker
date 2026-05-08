@@ -204,6 +204,10 @@ Public Class ChannelStatus
     Public PitchSlideActive As Boolean = False
     Public PitchSlideSpeed As Double = 0 ' can go positive and negative for both directions
 
+    Public PortamentoActive As Boolean = False
+    Public PortamentoBaseFrequency As Double = 0
+    Public PortamentoSpeed As Double = 0 ' only positive
+
     Public ArpeggioActive As Boolean = False
     Public ArpeggioBaseNote As String = ""
     Public ArpeggioNote1 As Byte = 0 ' these are offsets btw
@@ -223,6 +227,10 @@ Public Class ChannelStatus
 
         PitchSlideActive = False
         PitchSlideSpeed = 0
+
+        PortamentoActive = False
+        PortamentoBaseFrequency = 0
+        PortamentoSpeed = 0
 
         ArpeggioActive = False
         ArpeggioBaseNote = ""
