@@ -4,7 +4,7 @@ A software FM synth and a tracker to go with it.
 (if anyone has a better name please let me know)
 
 ## The synth
-The synth itself is a very basic 2op sine-only synth with feedback (like the OPL/YM3526). One "synth" is also only one channel.
+The synth itself is a basic 2op synth with multiple waveforms and feedback (like the OPL2/YM3812). One "synth" is also only one channel.
 This tracker uses eight synths for eight FM channels.
 
 The unusual thing about this synth is that it's entirely linear. The envelope generators and modulation levels are all linear.
