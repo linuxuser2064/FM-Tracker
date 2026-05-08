@@ -1,7 +1,14 @@
 ﻿Imports NAudio.Wave
 Public Class FMSynthProvider
     Implements ISampleProvider
-
+    <Flags>
+    Public Enum FMWaveform
+        Sine = 1
+        AbsSine = 2
+        HalfSine = 4
+        Cosine = 8
+    End Enum
+    Public enableAdditiveSynth As Boolean = False
     Private ReadOnly sampleRate As Integer = 48000
     Private phaseCarrier As Double = 0
     Private phaseModulator As Double = 0
@@ -25,6 +32,7 @@ Public Class FMSynthProvider
     Public releaseTime As Double = 0 ' seconds
     Private envelopeState As String = "off"
     Private noteOnTime As Double = 0
+    Public waveform As FMWaveform = FMWaveform.Sine
 
     ' ADSR envelope parameters for modulation depth
     Public attackTimeMod As Double = 0 ' seconds
@@ -33,6 +41,7 @@ Public Class FMSynthProvider
     Public releaseTimeMod As Double = 0.2 ' seconds
     Private envelopeStateMod As String = "off"
     Private noteOnTimeMod As Double = 0
+    Public waveformMod As FMWaveform = FMWaveform.Sine
 
     ' Pitch adjustment parameters
     Private pitchChangePerReadVal As Double = 0.0
@@ -270,6 +279,26 @@ Public Class FMSynthProvider
         ' Linear interpolate between steps
         Return table(index) + (table(index + 1) - table(index)) * frac
     End Function
+    Private Function GetWaveformCarrier(phase As Double) As Double
+        Return GetWaveform(phase, waveform)
+    End Function
+    Private Function GetWaveformModulator(phase As Double) As Double
+        Return GetWaveform(phase, waveformMod)
+    End Function
+    Private Function GetWaveform(phase As Double, wf As FMWaveform) As Double
+        Dim RootSine = If(wf.HasFlag(FMWaveform.Cosine), Math.Cos(phase), Math.Sin(phase))
+        Dim Output As Double = 0
+        If wf.HasFlag(FMWaveform.Sine) Then
+            Output += RootSine
+        End If
+        If wf.HasFlag(FMWaveform.AbsSine) Then
+            Output += Math.Abs(RootSine)
+        End If
+        If wf.HasFlag(FMWaveform.HalfSine) Then
+            Output += Math.Max(0, RootSine)
+        End If
+        Return Output
+    End Function
     Public Function Read(buffer As Single(), offset As Integer, count As Integer) As Integer Implements ISampleProvider.Read
 
         For i As Integer = 0 To count - 1
@@ -292,7 +321,7 @@ Public Class FMSynthProvider
             Dim modPhase As Double = (phaseModulator * 2.0 * Math.PI) + (GetOplFeedback(feedback) * feedbackInput)
 
             ' Generate modulator output
-            Dim modulatorSample As Double = Math.Sin(modPhase) * modulationIndex
+            Dim modulatorSample As Double = GetWaveformModulator(modPhase) * modulationIndex
 
             ' Shift stored feedback samples
             previousModulation = modulatorSample
@@ -302,14 +331,21 @@ Public Class FMSynthProvider
             If phaseModulator >= 1.0 Then phaseModulator -= 1.0
 
             ' Carrier modulated by modulator
-            Dim carrierPhase As Double = (phaseCarrier + modulatorSample) * 2.0 * Math.PI
-            Dim carrierSample As Double = Math.Sin(carrierPhase)
+            Dim carrierSample As Double = 0
+
+            If Not enableAdditiveSynth Then
+                Dim carrierPhase As Double = (phaseCarrier + modulatorSample) * 2.0 * Math.PI
+                carrierSample = GetWaveformCarrier(carrierPhase) * volumeValue
+            Else
+                Dim carrierPhase As Double = phaseCarrier * 2.0 * Math.PI
+                carrierSample = (GetWaveformCarrier(carrierPhase) * volumeValue) + modulatorSample
+            End If
 
             ' Advance carrier phase
             phaseCarrier += (frequencyCarrier * (1 + detuneCarrier)) * multiplierCarrier / sampleRate
             If phaseCarrier >= 1.0 Then phaseCarrier -= 1.0
 
-            buffer(offset + i) = CSng(carrierSample * volumeValue)
+            buffer(offset + i) = CSng(carrierSample)
 
         Next
 

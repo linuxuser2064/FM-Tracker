@@ -63,7 +63,15 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="260,20,0,0" TextWrapping="Wrap" Text="Volume" VerticalAlignment="Top"/>
             <Slider Grid.Column="1" x:Name="CTLSlider" HorizontalAlignment="Left" Margin="265,40,0,0" VerticalAlignment="Top" Width="30" Orientation="Vertical" Height="232" LargeChange="0.1" SmallChange="0.05" Maximum="1.5" TickPlacement="Both" ValueChanged="CTLSlider_ValueChanged" TickFrequency="0.1"/>
             <TextBlock Grid.Column="1" x:Name="CTLLabel" HorizontalAlignment="Left" Margin="259,277,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="42" TextAlignment="Center"/>
+            <CheckBox x:Name="MSineBox" Content="Sine" HorizontalAlignment="Left" Margin="179,41,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox x:Name="MAbsSineBox" Content="Abs Sine" HorizontalAlignment="Left" Margin="179,61,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox x:Name="MHalfSineBox" Content="Half Sine" HorizontalAlignment="Left" Margin="179,81,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox x:Name="MCosineBox" Content="Cosine" HorizontalAlignment="Left" Margin="179,101,0,0" VerticalAlignment="Top" Foreground="White"/>
 
+            <CheckBox Grid.Column="1" x:Name="CSineBox" Content="Sine" HorizontalAlignment="Left" Margin="179,41,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox Grid.Column="1" x:Name="CAbsSineBox" Content="Abs Sine" HorizontalAlignment="Left" Margin="179,61,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox Grid.Column="1" x:Name="CHalfSineBox" Content="Half Sine" HorizontalAlignment="Left" Margin="179,81,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <CheckBox Grid.Column="1" x:Name="CCosineBox" Content="Cosine" HorizontalAlignment="Left" Margin="179,101,0,0" VerticalAlignment="Top" Foreground="White"/>
 
         </Grid>
         <Label Content="Feedback" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Width="60" Margin="0,29,0,0"/>
@@ -72,6 +80,7 @@
         <Label Content="Pitch slide" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="221,29,0,0"/>
         <Slider x:Name="PitchMacroSlider" HorizontalAlignment="Left" Margin="286,28,0,0" VerticalAlignment="Top" Width="120" Maximum="0.2" SmallChange="0.005" TickPlacement="BottomRight" Height="37" Minimum="-0.2" TickFrequency="0.05" ValueChanged="PitchMacroSlider_ValueChanged" LargeChange="0.05"/>
         <Label x:Name="PitchMacroLabel" Content="{Binding Value, ElementName=PitchMacroSlider}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Height="28" Margin="411,29,0,0"/>
+        <CheckBox x:Name="AdditiveSynthBox" Content="Additive synthesis" HorizontalAlignment="Left" Margin="444,35,0,0" VerticalAlignment="Top" Background="White" Foreground="White"/>
 
     </Grid>
 </Window>

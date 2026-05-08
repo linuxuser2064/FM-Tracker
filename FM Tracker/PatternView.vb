@@ -380,6 +380,7 @@
                 For i = SelectionMin() To SelectionMax()
                     ClipboardBuffer.Add(Pattern(i).Clone())
                 Next
+                SyncCopyPasteBuffers()
                 selectionStartRow = -1
                 selectionEndRow = -1
             Else

@@ -31,6 +31,7 @@ Public Class Instrument
     Public Property CMultiplier As Int32
     Public Property CTL As Single
     Public Property CDetune As Double ' this is -1 to 1
+    Public Property CWaveform As FMSynthProvider.FMWaveform
     Public Property MAttack As Single
     Public Property MDecay As Single
     Public Property MSustain As Single
@@ -38,18 +39,23 @@ Public Class Instrument
     Public Property MMultiplier As Int32
     Public Property MTL As Single
     Public Property MDetune As Double ' this is -1 to 1
+    Public Property MWaveform As FMSynthProvider.FMWaveform
+    Public Property AdditiveSynth As Boolean
     Public Sub New()
 
     End Sub
     Public Function Clone() As Instrument
         Return New Instrument(Name, MTL, CMultiplier, MMultiplier, Feedback,
                               New ADSR(CAttack, CDecay, CSustain, CRelease),
-                              New ADSR(MAttack, MDecay, MSustain, MRelease), CTL, PitchMacro)
+                              New ADSR(MAttack, MDecay, MSustain, MRelease), CTL, PitchMacro, CWaveform, MWaveform, AdditiveSynth)
     End Function
     Public Sub New(iName As String, iTL As Single, iCarrierMult As Single, iModMult As Int32, iFeedback As Double,
                    carrierADSR As ADSR, modulatorADSR As ADSR,
                    Optional Volume As Double = 1, Optional PitchMacro As Double = 0,
-                   Optional CarrierDetune As Double = 0, Optional ModulatorDetune As Double = 0)
+                   Optional CarrierDetune As Double = 0, Optional ModulatorDetune As Double = 0,
+                   Optional CWaveform As FMSynthProvider.FMWaveform = FMSynthProvider.FMWaveform.Sine,
+                   Optional MWaveform As FMSynthProvider.FMWaveform = FMSynthProvider.FMWaveform.Sine,
+                   Optional AdditiveSynth As Boolean = False)
         MTL = iTL
         MMultiplier = iModMult
         CMultiplier = iCarrierMult
@@ -67,6 +73,9 @@ Public Class Instrument
         Me.PitchMacro = PitchMacro
         CDetune = CarrierDetune
         MDetune = ModulatorDetune
+        Me.CWaveform = CWaveform
+        Me.MWaveform = MWaveform
+        Me.AdditiveSynth = AdditiveSynth
     End Sub
 End Class
 Public Structure ADSR

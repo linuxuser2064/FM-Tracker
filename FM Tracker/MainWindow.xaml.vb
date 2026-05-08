@@ -67,6 +67,10 @@ Class MainWindow
         syn.releaseTimeMod = ins.MRelease
         syn.PitchChangePerRead = ins.PitchMacro ' should be in playback timer
         syn.FeedbackAmount = ins.Feedback
+        syn.ModulatorDetune = ins.MDetune / 1000
+        syn.waveform = ins.CWaveform
+        syn.waveformMod = ins.MWaveform
+        syn.enableAdditiveSynth = ins.AdditiveSynth
     End Sub
     Public Sub EffectSetup(ByRef note As Note, status As ChannelStatus)
         Select Case note.EffectLetter
@@ -481,7 +485,7 @@ Class MainWindow
 
 
     Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
-        If e.IsRepeat Then Exit Sub
+        If e.IsRepeat Or Keyboard.Modifiers <> ModifierKeys.None Then Exit Sub
         If e.Key = Key.Escape Then
             FMSynth1.StopNote()
             FMSynth2.StopNote()

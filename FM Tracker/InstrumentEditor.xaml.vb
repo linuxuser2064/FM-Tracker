@@ -54,6 +54,15 @@
         CTLSlider.Value = ins.CTL
         CMultiplierSlider.Value = ins.CMultiplier
         InstrumentNameBox.Text = ins.Name
+        MSineBox.IsChecked = ins.MWaveform.HasFlag(FMSynthProvider.FMWaveform.Sine)
+        MCosineBox.IsChecked = ins.MWaveform.HasFlag(FMSynthProvider.FMWaveform.Cosine)
+        MAbsSineBox.IsChecked = ins.MWaveform.HasFlag(FMSynthProvider.FMWaveform.AbsSine)
+        MHalfSineBox.IsChecked = ins.MWaveform.HasFlag(FMSynthProvider.FMWaveform.HalfSine)
+        CSineBox.IsChecked = ins.CWaveform.HasFlag(FMSynthProvider.FMWaveform.Sine)
+        CCosineBox.IsChecked = ins.CWaveform.HasFlag(FMSynthProvider.FMWaveform.Cosine)
+        CAbsSineBox.IsChecked = ins.CWaveform.HasFlag(FMSynthProvider.FMWaveform.AbsSine)
+        CHalfSineBox.IsChecked = ins.CWaveform.HasFlag(FMSynthProvider.FMWaveform.HalfSine)
+        AdditiveSynthBox.IsChecked = ins.AdditiveSynth
     End Sub
     Private Sub FeedbackSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
         FeedbackLabel.Content = FeedbackSlider.Value / 16
@@ -140,6 +149,29 @@
     End Sub
 
     Private Sub MDetuneSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
-        'InstrumentsList(SelectedInstrument).
+        InstrumentsList(SelectedInstrument).MDetune = e.NewValue
+    End Sub
+
+    Private Sub MSineBox_Checked(sender As Object, e As RoutedEventArgs) _
+        Handles MSineBox.Checked, MSineBox.Unchecked, MCosineBox.Checked, MCosineBox.Unchecked,
+                MAbsSineBox.Checked, MAbsSineBox.Unchecked, MHalfSineBox.Checked, MHalfSineBox.Unchecked
+        InstrumentsList(SelectedInstrument).MWaveform = 0
+        If MSineBox.IsChecked Then InstrumentsList(SelectedInstrument).MWaveform += FMSynthProvider.FMWaveform.Sine
+        If MCosineBox.IsChecked Then InstrumentsList(SelectedInstrument).MWaveform += FMSynthProvider.FMWaveform.Cosine
+        If MAbsSineBox.IsChecked Then InstrumentsList(SelectedInstrument).MWaveform += FMSynthProvider.FMWaveform.AbsSine
+        If MHalfSineBox.IsChecked Then InstrumentsList(SelectedInstrument).MWaveform += FMSynthProvider.FMWaveform.HalfSine
+    End Sub
+    Private Sub CSineBox_Checked(sender As Object, e As RoutedEventArgs) _
+        Handles CSineBox.Checked, CSineBox.Unchecked, CCosineBox.Checked, CCosineBox.Unchecked,
+                CAbsSineBox.Checked, CAbsSineBox.Unchecked, CHalfSineBox.Checked, CHalfSineBox.Unchecked
+        InstrumentsList(SelectedInstrument).CWaveform = 0
+        If CSineBox.IsChecked Then InstrumentsList(SelectedInstrument).CWaveform += FMSynthProvider.FMWaveform.Sine
+        If CCosineBox.IsChecked Then InstrumentsList(SelectedInstrument).CWaveform += FMSynthProvider.FMWaveform.Cosine
+        If CAbsSineBox.IsChecked Then InstrumentsList(SelectedInstrument).CWaveform += FMSynthProvider.FMWaveform.AbsSine
+        If CHalfSineBox.IsChecked Then InstrumentsList(SelectedInstrument).CWaveform += FMSynthProvider.FMWaveform.HalfSine
+    End Sub
+
+    Private Sub AdditiveSynthBox_Checked(sender As Object, e As RoutedEventArgs) Handles AdditiveSynthBox.Checked, AdditiveSynthBox.Unchecked
+        InstrumentsList(SelectedInstrument).AdditiveSynth = AdditiveSynthBox.IsChecked
     End Sub
 End Class

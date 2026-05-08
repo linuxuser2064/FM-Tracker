@@ -65,7 +65,7 @@
 
         </Grid>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="Black">
-            <Grid Grid.Row="1" Margin="0,0,0,0" Background="Black" Width="900" HorizontalAlignment="Left">
+            <Grid Grid.Row="1" Margin="0,0,0,0" Background="Black" HorizontalAlignment="Left">
                 <local:PatternView ClipToBounds="True" x:Name="PatternCh1" Background="Black" ShowRowNumbers="True" HorizontalAlignment="Left" Width="130" Margin="0,18,0,0"/>
                 <local:PatternView ClipToBounds="True" x:Name="PatternCh2" Background="Black" HorizontalAlignment="Left" Width="100" Margin="130,18,0,0" />
                 <local:PatternView ClipToBounds="True" x:Name="PatternCh3" Background="Black" HorizontalAlignment="Left" Width="100" Margin="230,18,0,0" />
